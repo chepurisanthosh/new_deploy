@@ -1,0 +1,15 @@
+---
+- hosts: webserver
+  become: true
+  become_user: root
+  tasks:
+  - name: intal tomcat on the host server
+    yum: name=tomcat state=present
+  - name: start tomcat service
+    service: name=tomcat state=started
+  - name: deploy a war file on tomcat server
+    copy:
+      src: /var/lib/jenkins/workspace/deploy_to_tomcat/target/addressbook.war
+      dest: /usr/share/tomcat/webapps
+  - name: restart tomcat service
+    service: name=tomcat state=restarted
